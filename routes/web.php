@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,3 +28,17 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat', function () {
+    return Inertia::render('Chat/container');
+})->name('chat');
+
+// Get all chatrooms
+Route::middleware('auth:sanctum')->get('/chat/rooms', [ChatController::class, 'rooms']);
+
+// Get messages
+Route::middleware('auth:sanctum')->get('chat/room/{roomId}/messages', [ChatController::class, 'messages']);
+
+// Send new massage
+Route::middleware('auth:sanctum')->post('/chat/room/{roomsId}/message', [ChatController::class, 'newMessage']);
+
